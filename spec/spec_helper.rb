@@ -1,8 +1,7 @@
 require 'bundler/setup'
 Bundler.setup
 
-require 'ladder'
-require 'awesome_print'
+require 'active_triples/elasticsearch'
 require 'pry'
 require 'simplecov'
 SimpleCov.start
@@ -20,18 +19,13 @@ RSpec.configure do |config|
   config.formatter = :documentation
 
   config.before do
-    Mongoid.load!('mongoid.yml', :development)
-    Mongoid.logger.level = Moped.logger.level = Logger::DEBUG
-
     require 'i18n/backend/fallbacks'
     I18n::Backend::Simple.send(:include, I18n::Backend::Fallbacks)
     I18n.fallbacks[:en] = [:en, :sv]
     I18n.enforce_available_locales = false
-
-    Ladder::Config.settings[:base_uri] = 'http://example.org'
   end
 
   config.before :each do
-    Mongoid.purge!
+    Elasticsearch::Client.new(host: 'localhost:9200', log: true).indices.delete index: '_all'
   end
 end

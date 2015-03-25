@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.platform      = Gem::Platform::RUBY
   spec.authors       = 'MJ Suhonos'
   spec.email         = 'mj@suhonos.ca'
-  spec.summary       = 'Elasticsearch indexer for ActiveTriples models'
+  spec.summary       = 'Elasticsearch integration for ActiveTriples models'
   spec.description   = 'TODO'
   spec.homepage      = 'https://github.com/ladder/active_triples-elasticsearch'
   spec.license       = 'APACHE2'
