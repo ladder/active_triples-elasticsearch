@@ -6,7 +6,6 @@ module ActiveTriples
       extend ActiveSupport::Concern
 
       included do
-        include ActiveTriples::Elasticsearch::Resource
         include GlobalID::Identification
 
         # GlobalID.app = 'Ladder'

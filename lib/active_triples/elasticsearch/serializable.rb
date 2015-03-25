@@ -5,15 +5,15 @@ module ActiveTriples
   module Elasticsearch
     module Serializable
       ##
-      # Return a Turtle representation for the resource
+      # Return a Turtle representation for the object
       #
       # @see ActiveTriples::Resource#dump
       #
       # @param [Hash] opts options to pass to ActiveTriples
       # @option opts [Boolean] :related whether to include related resources (default: false)
       # @return [String] a serialized Turtle version of the resource
-      def as_turtle(opts = { related: Ladder::Config.settings[:with_relations] })
-        update_resource(opts.slice :related).dump(:ttl, { standard_prefixes: true }.merge(opts))
+      def as_turtle(opts = {})
+        self.dump(:ttl, { standard_prefixes: true }.merge(opts))
       end
 
       ##
@@ -24,8 +24,8 @@ module ActiveTriples
       # @param [Hash] opts options to pass to ActiveTriples
       # @option opts [Boolean] :related whether to include related resources (default: false)
       # @return [Hash] a serialized JSON-LD version of the resource
-      def as_jsonld(opts = { related: Ladder::Config.settings[:with_relations] })
-        JSON.parse update_resource(opts.slice :related).dump(:jsonld, { standard_prefixes: true }.merge(opts))
+      def as_jsonld(opts = {})
+        JSON.parse self.dump(:jsonld, { standard_prefixes: true }.merge(opts))
       end
 
       ##
@@ -35,9 +35,9 @@ module ActiveTriples
       # NB: Will NOT embed related objects with same @type.
       # Spec under discussion, see https://github.com/json-ld/json-ld.org/issues/110
       #
-      # @return [Hash] a serialized JSON-LD version of the resource
+      # @return [Hash] a serialized, framed JSON-LD version of the resource
       def as_framed_jsonld
-        json_hash = as_jsonld related: true
+        json_hash = self.as_jsonld
 
         context = json_hash['@context']
         frame = { '@context' => context }
