@@ -10,8 +10,8 @@ module ActiveTriples
 
         # GlobalID.app = 'Ladder'
 
-        after_create   { enqueue :index }
-        after_update   { enqueue :update }
+        # after_create   { enqueue :index }
+        # after_update   { enqueue :update }
         before_destroy { enqueue :delete }
       end
 

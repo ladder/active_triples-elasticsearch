@@ -1,4 +1,5 @@
 require 'active_support/concern'
+require 'active_model/callbacks'
 require 'active_triples'
 
 require 'elasticsearch/model'
@@ -7,14 +8,17 @@ require 'elasticsearch/model/callbacks'
 module ActiveTriples
   module Elasticsearch
     extend ActiveSupport::Concern
+    extend ActiveModel::Callbacks
 
     autoload :Background, 'active_triples/elasticsearch/background'
     autoload :Serializable, 'active_triples/elasticsearch/serializable'
 
     included do
       include ::Elasticsearch::Model
-      include ActiveTriples::Elasticsearch::Serializable
       include ::Elasticsearch::Model::Callbacks unless ancestors.include? ActiveTriples::Elasticsearch::Background
+      include ActiveTriples::Elasticsearch::Serializable
+
+      define_model_callbacks :destroy
     end
 
     ##
